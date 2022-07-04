@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id                Int                 @id @default(autoincrement())
+  username          String              @db.VarChar(30)
+  email             String              @db.VarChar(50)
+  password          String              @db.VarChar(100)
+  registered_at     DateTime            @default(now()) @db.Timestamptz(6)
+  flashcard_history flashcard_history[]
+}
+
+model collections {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(50)
+
+  flashcard flashcards[]
+}
+
+model flashcards {
+  id             Int     @id @default(autoincrement())
+  collection_id  Int
+  question       String  @db.VarChar(300)
+  is_multiple    Boolean
+  answer         String  @db.VarChar(100)
+  wrong_answer_1 String? @db.VarChar(100)
+  wrong_answer_2 String? @db.VarChar(100)
+  wrong_answer_3 String? @db.VarChar(100)
+  wrong_answer_4 String? @db.VarChar(100)
+
+  collection        collections         @relation(fields: [collection_id], references: [id])
+  flashcard_history flashcard_history[]
+}
+
+model flashcard_history {
+  id            Int      @id @default(autoincrement())
+  user_id       Int
+  flashcard_id  Int
+  last_answered DateTime @db.Timestamptz(6)
+  last_correct  Boolean
+
+  user      users      @relation(fields: [user_id], references: [id])
+  flashcard flashcards @relation(fields: [flashcard_id], references: [id])
+}
