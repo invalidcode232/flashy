@@ -67,18 +67,24 @@ model collections {
 }
 
 model flashcards {
-  id             Int     @id @default(autoincrement())
-  collection_id  Int
-  question       String  @db.VarChar(300)
-  is_multiple    Boolean
-  answer         String  @db.VarChar(100)
-  wrong_answer_1 String? @db.VarChar(100)
-  wrong_answer_2 String? @db.VarChar(100)
-  wrong_answer_3 String? @db.VarChar(100)
-  wrong_answer_4 String? @db.VarChar(100)
+  id            Int     @id @default(autoincrement())
+  collection_id Int
+  question      String  @db.VarChar(300)
+  is_multiple   Boolean
+  answer        String  @db.VarChar(100)
 
   collection        collections         @relation(fields: [collection_id], references: [id])
+  flashcard_answers flashcard_answers[]
   flashcard_history flashcard_history[]
+}
+
+model flashcard_answers {
+  id           Int     @id @default(autoincrement())
+  flashcard_id Int
+  is_correct   Boolean
+  answer       String  @db.VarChar(100)
+
+  flashcard flashcards @relation(fields: [flashcard_id], references: [id])
 }
 
 model flashcard_history {
