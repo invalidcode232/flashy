@@ -1,31 +1,55 @@
-import { AnswerData, flashcards } from '../types/types';
+import { AnswerData } from '../types/types';
 import client from '../client';
 
 class Flashcard {
-    question: string;
-    collection_id: number;
-    answerData: AnswerData;
-    id?: number;
-    data?: flashcards;
-
-    constructor(question: string, collection_id: number, data: AnswerData) {
-        this.question = question;
-        this.collection_id = collection_id;
-        this.answerData = data;
-    }
-
-    async save() {
+    static async save(
+        question: string,
+        collectionId: number,
+        answerData: AnswerData,
+    ) {
         const flashcard = await client.flashcards.create({
             data: {
-                question: this.question,
-                collection_id: this.collection_id,
-                ...this.answerData,
+                question: question,
+                collection_id: collectionId,
+                ...answerData,
             },
         });
 
-        this.data = flashcard;
+        return flashcard;
+    }
 
-        return this;
+    static async findById(id: number) {
+        const flashcard = await client.flashcards.findFirst({
+            where: {
+                id: id,
+            },
+        });
+
+        return flashcard;
+    }
+
+    static async delete(id: number) {
+        const flashcard = await client.flashcards.delete({
+            where: {
+                id: id,
+            },
+        });
+
+        return flashcard;
+    }
+
+    static async edit(id: number, question: string, answerData: AnswerData) {
+        const flashcard = await client.flashcards.update({
+            where: {
+                id: id,
+            },
+            data: {
+                question: question,
+                ...answerData,
+            },
+        });
+
+        return flashcard;
     }
 }
 

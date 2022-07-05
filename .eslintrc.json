@@ -1,10 +1,10 @@
 {
-  "extends": "next/core-web-vitals",
-  "plugins": ["unused-imports"],
-  "rules": {
-    "semi": ["error", "always"],
-    "quotes": ["error", "single"],
-    "no-duplicate-imports": "error",
-    "unused-imports/no-unused-imports": "error"
-  }
+    "extends": "next/core-web-vitals",
+    "plugins": ["unused-imports"],
+    "rules": {
+        "semi": ["warn", "always"],
+        "quotes": ["warn", "single"],
+        "no-duplicate-imports": "warn",
+        "unused-imports/no-unused-imports": "warn"
+    }
 }

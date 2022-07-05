@@ -5,10 +5,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const { name } = req.body;
 
-        new Collection(name)
-            .save()
-            .then((create) => {
-                res.status(200).send(create.data);
+        Collection.save(name)
+            .then((createdCollection) => {
+                res.status(200).send(createdCollection);
             })
             .catch((err) => {
                 res.status(500).send(err);

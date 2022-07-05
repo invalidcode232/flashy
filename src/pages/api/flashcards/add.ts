@@ -5,11 +5,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const { question, collectionId, answerData } = req.body;
 
-        const flashcard = new Flashcard(question, collectionId, answerData);
-        flashcard
-            .save()
-            .then((create) => {
-                res.status(200).send(create.data);
+        Flashcard.save(question, collectionId, answerData)
+            .then((createdFlashcard) => {
+                res.status(200).send(createdFlashcard);
             })
             .catch((err) => {
                 res.status(500).send(err);
