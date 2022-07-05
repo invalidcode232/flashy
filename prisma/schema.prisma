@@ -71,7 +71,6 @@ model flashcards {
   collection_id Int
   question      String  @db.VarChar(300)
   is_multiple   Boolean
-  answer        String  @db.VarChar(100)
 
   collection        collections         @relation(fields: [collection_id], references: [id])
   flashcard_answers flashcard_answers[]

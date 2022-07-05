@@ -1,12 +1,8 @@
-import { users, collections, flashcards } from '@prisma/client';
+import { collections, flashcards } from '@prisma/client';
 
 interface AnswerData {
-    is_multiple: boolean;
     answer: string;
-    wrong_answer_1?: string;
-    wrong_answer_2?: string;
-    wrong_answer_3?: string;
-    wrong_answer_4?: string;
+    is_correct: boolean;
 }
 
-export type { AnswerData, users, collections, flashcards };
+export type { AnswerData, collections, flashcards };

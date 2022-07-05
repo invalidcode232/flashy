@@ -1,18 +1,28 @@
-import { AnswerData } from '../types/types';
 import client from '../client';
+import { AnswerData } from '../types/types';
 
 class Flashcard {
     static async save(
         question: string,
         collectionId: number,
-        answerData: AnswerData,
+        is_multiple: boolean,
+        answers: AnswerData[],
     ) {
         const flashcard = await client.flashcards.create({
             data: {
                 question: question,
                 collection_id: collectionId,
-                ...answerData,
+                is_multiple: is_multiple,
             },
+        });
+
+        answers.forEach(async (answer) => {
+            await client.flashcard_answers.create({
+                data: {
+                    ...answer,
+                    flashcard_id: flashcard.id,
+                },
+            });
         });
 
         return flashcard;
@@ -25,13 +35,34 @@ class Flashcard {
             },
         });
 
-        return flashcard;
+        const answers = await client.flashcard_answers.findMany({
+            where: {
+                flashcard_id: id,
+            },
+        });
+
+        if (!flashcard || !answers) {
+            return null;
+        }
+
+        const res = {
+            ...flashcard,
+            answers: answers,
+        };
+
+        return res;
     }
 
     static async delete(id: number) {
         const flashcard = await client.flashcards.delete({
             where: {
                 id: id,
+            },
+        });
+
+        await client.flashcard_answers.deleteMany({
+            where: {
+                flashcard_id: id,
             },
         });
 
