@@ -28,6 +28,12 @@ class Flashcard {
         return flashcard;
     }
 
+    static async get() {
+        const flashcards = await client.flashcards.findMany();
+
+        return flashcards;
+    }
+
     static async findById(id: number) {
         const flashcard = await client.flashcards.findFirst({
             where: {

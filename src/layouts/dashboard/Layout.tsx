@@ -1,0 +1,21 @@
+import React from 'react';
+import Navbar from '../../components/navbar/Navbar';
+import Sidebar from '../../components/sidebar/Sidebar';
+
+type Props = {
+    children: React.ReactNode;
+};
+
+const Layout = (props: Props) => {
+    return (
+        <div className="flex">
+            <Sidebar />
+            <div className="w-full" style={{ padding: '1.25rem' }}>
+                <Navbar />
+                <main>{props.children}</main>
+            </div>
+        </div>
+    );
+};
+
+export default Layout;

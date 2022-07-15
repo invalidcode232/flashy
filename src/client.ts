@@ -1,6 +1,6 @@
-import { PrismaClient, users, collections, flashcards } from '@prisma/client';
+import { PrismaClient, collections, flashcards } from '@prisma/client';
 
 const client = new PrismaClient();
 
 export default client;
-export type { users, collections, flashcards };
+export type { collections, flashcards };

@@ -1,0 +1,8 @@
+.selector {
+    position: absolute;
+    left: 0px;
+    height: 30px;
+    width: 6px;
+    border-radius: 0px 150px 150px 0px;
+    background-color: rgb(30 64 175);
+}
