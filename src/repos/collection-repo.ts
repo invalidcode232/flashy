@@ -35,18 +35,25 @@ import client from '../client';
 // }
 
 class Collection {
-    static async save(name: string) {
-        if (!this.name) {
-            throw new Error('Invalid name');
-        }
-
+    static async save(name: string, userId: string) {
         const createdCollection = await client.collections.create({
             data: {
-                name: this.name,
+                name: name,
+                userId: userId,
             },
         });
 
         return createdCollection;
+    }
+
+    static async findByUser(userId: string) {
+        const collection = await client.collections.findMany({
+            where: {
+                userId: userId,
+            },
+        });
+
+        return collection;
     }
 
     static async findById(id: number) {

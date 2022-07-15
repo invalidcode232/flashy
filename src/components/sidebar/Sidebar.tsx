@@ -12,15 +12,15 @@ const Sidebar = (props: Props) => {
                 <AiFillThunderbolt />
             </div>
 
-            <SidebarItem active={true}>
+            <SidebarItem active={true} href={'/dashboard'}>
                 <FaHome />
             </SidebarItem>
 
-            <SidebarItem active={false}>
+            <SidebarItem active={false} href={'#'}>
                 <FaLightbulb />
             </SidebarItem>
 
-            <SidebarItem active={false}>
+            <SidebarItem active={false} href={'#'}>
                 <FaCog />
             </SidebarItem>
         </div>

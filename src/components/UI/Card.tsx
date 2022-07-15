@@ -3,7 +3,7 @@ import { FaCog } from 'react-icons/fa';
 
 type Props = {
     name: string;
-    users: number;
+    flashcards: number;
 };
 
 const Card = (props: Props) => {
@@ -12,7 +12,7 @@ const Card = (props: Props) => {
             <div className="hover:cursor-pointer bg-white px-8 py-4 rounded-md">
                 <h1 className="text-xl font-semibold">{props.name}</h1>
                 <span className="text-gray-600 text-sm">
-                    {props.users} users
+                    {props.flashcards} flashcards
                 </span>
             </div>
             <div className="flex justify-between text-gray-600 text-sm p-2 hover:text-blue-600">

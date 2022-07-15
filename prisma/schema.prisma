@@ -47,6 +47,7 @@ model User {
   sessions      Session[]
 
   flashcard_history flashcard_history[]
+  collections       collections[]
   @@map("users")
 }
 
@@ -60,10 +61,12 @@ model VerificationToken {
 }
 
 model collections {
-  id   Int    @id @default(autoincrement())
-  name String @db.VarChar(50)
+  id     Int    @id @default(autoincrement())
+  name   String @db.VarChar(50)
+  userId String
 
   flashcard flashcards[]
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model flashcards {
@@ -72,7 +75,7 @@ model flashcards {
   question      String  @db.VarChar(300)
   is_multiple   Boolean
 
-  collection        collections         @relation(fields: [collection_id], references: [id])
+  collection        collections         @relation(fields: [collection_id], references: [id], onDelete: Cascade)
   flashcard_answers flashcard_answers[]
   flashcard_history flashcard_history[]
 }
@@ -83,7 +86,7 @@ model flashcard_answers {
   is_correct   Boolean
   answer       String  @db.VarChar(100)
 
-  flashcard flashcards @relation(fields: [flashcard_id], references: [id])
+  flashcard flashcards @relation(fields: [flashcard_id], references: [id], onDelete: Cascade)
 }
 
 model flashcard_history {
@@ -94,5 +97,5 @@ model flashcard_history {
   last_correct  Boolean
 
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  flashcard flashcards @relation(fields: [flashcard_id], references: [id])
+  flashcard flashcards @relation(fields: [flashcard_id], references: [id], onDelete: Cascade)
 }

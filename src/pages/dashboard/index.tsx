@@ -1,25 +1,47 @@
+import { collections } from '@prisma/client';
 import type { NextPage } from 'next';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { useEffect } from 'react';
-import NoLogin from '../../components/auth/NoLogin';
+import { useEffect, useState } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import NewCollectionModal from '../../components/modals/NewCollectionModal';
 import Card from '../../components/UI/Card';
 import Layout from '../../layouts/dashboard/Layout';
 
 const Dashboard: NextPage = () => {
-    useEffect(() => {
-        fetch('/api/flashcards').then(async (response) => {
-            const data = await response.json();
+    const [collections, setCollections] = useState([]);
+    const [newCollectionModal, setNewCollectionModal] = useState(false);
 
-            console.log(data);
+    useEffect(() => {
+        fetch('/api/collections').then(async (response) => {
+            const data = await response.json();
+            setCollections(data);
         });
     }, []);
 
     return (
         <Layout>
-            <h1 className="text-2xl mb-5">LUA scripts</h1>
+            <NewCollectionModal
+                isOpen={newCollectionModal}
+                onClose={() => setNewCollectionModal(false)}
+            />
+            <div className="flex justify-between">
+                <h1 className="text-2xl mb-5">Collections</h1>
+                <button
+                    className={
+                        'bg-white px-5 py-1 text-xl border-2 border-blue-500 text-blue-500 hover:cursor-pointer rounded-md hover:bg-blue-500 hover:border-white hover:text-white'
+                    }
+                    onClick={() => setNewCollectionModal(true)}
+                >
+                    <FaPlus />
+                </button>
+            </div>
             <div className="flex">
-                <Card name="Loyalty.lua" users={10} />
-                <Card name="sapphire" users={22} />
+                {collections.map((collection: collections) => (
+                    <Card
+                        key={collection.id}
+                        name={collection.name}
+                        flashcards={10}
+                    />
+                ))}
             </div>
         </Layout>
     );

@@ -5,12 +5,13 @@ import styles from './SidebarItem.module.css';
 type Props = {
     children: React.ReactNode;
     active: boolean;
+    href: string;
 };
 
 const SidebarItem = (props: Props) => {
     return (
         <div className="mt-9">
-            <Link href="#">
+            <Link href={props.href}>
                 <div
                     className={`flex justify-center w-full hover:cursor-pointer ${
                         props.active ? 'text-blue-800' : 'text-gray-500'
