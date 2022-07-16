@@ -1,7 +1,7 @@
 import { collections } from '@prisma/client';
 import React, { useContext } from 'react';
 import CollectionContext from '../../contexts/CollectionContext';
-import Card from '../UI/Card';
+import CollectionCard from './CollectionCard';
 
 type Props = {};
 
@@ -11,11 +11,7 @@ const CollectionsList = (props: Props) => {
     return (
         <div className="flex flex-wrap gap-y-5">
             {collectionCtx?.collections.map((collection: collections) => (
-                <Card
-                    key={collection.id}
-                    collection={collection}
-                    flashcards={10}
-                />
+                <CollectionCard key={collection.id} collection={collection} />
             ))}
         </div>
     );
