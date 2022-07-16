@@ -18,9 +18,7 @@ const Input = (props: Props) => {
             <input
                 {...props}
                 {...field}
-                className={
-                    'bg-gray-100 border-2 border-gray-200 rounded-md w-1/4 p-2'
-                }
+                className={' border-2 border-gray-500 rounded-md w-1/4 p-2'}
             />
             {meta.error && meta.touched && (
                 <div aria-live="polite" className={'text-red-500'}>

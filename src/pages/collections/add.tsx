@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import Layout from '../../layouts/dashboard/Layout';
+import Layout from '../../layouts/Dashboard/Layout';
 import { useFormik, Form, FormikProvider, useField } from 'formik';
 import * as Yup from 'yup';
 import Input from '../../components/UI/Input';

@@ -7,7 +7,7 @@ type Props = {};
 
 const Sidebar = (props: Props) => {
     return (
-        <div className="w-[5rem] h-screen bg-gray-100 text-blue-700 border-gray-200 border-r-[1px] p-3">
+        <div className="w-[5rem] h-screen bg-gray-100 text-blue-500 border-gray-200 border-r-[1px] p-3">
             <div className="text-5xl font-bold mt-3">
                 <AiFillThunderbolt />
             </div>

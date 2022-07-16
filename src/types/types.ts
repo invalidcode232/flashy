@@ -5,4 +5,16 @@ interface AnswerData {
     is_correct: boolean;
 }
 
-export type { AnswerData, collections, flashcards };
+// interface CollectionState {
+//     collections: collections[];
+// }
+
+// interface CollectionState extends Array<collections> {}
+
+interface CollectionContextType {
+    collections: collections[];
+    addCollection: (collection: collections) => void;
+}
+
+export type { AnswerData, collections, flashcards, CollectionContextType };
+// export default CollectionState;
