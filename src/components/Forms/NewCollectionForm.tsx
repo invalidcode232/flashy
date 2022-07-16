@@ -49,7 +49,7 @@ const NewCollectionForm = (props: Props) => {
                 />
                 <button
                     type="submit"
-                    className="p-2 bg-blue-500 rounded-md text-white px-3 mt-3 inline-block mr-3"
+                    className="p-2 bg-blue-500 hover:bg-blue-600 rounded-md text-white px-3 mt-3 inline-block mr-3"
                 >
                     Add
                 </button>

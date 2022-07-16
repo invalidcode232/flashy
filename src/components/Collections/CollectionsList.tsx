@@ -13,7 +13,7 @@ const CollectionsList = (props: Props) => {
             {collectionCtx?.collections.map((collection: collections) => (
                 <Card
                     key={collection.id}
-                    name={collection.name}
+                    collection={collection}
                     flashcards={10}
                 />
             ))}

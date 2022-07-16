@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import Layout from '../../layouts/Dashboard/Layout';
+import Layout from '../../../layouts/Dashboard/Layout';
 
 const Dashboard: NextPage = () => {
     return (
