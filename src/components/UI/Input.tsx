@@ -5,6 +5,7 @@ import { useField } from 'formik';
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
     name: string;
     label?: string;
+    onChange?: () => void;
 }
 
 const Input = (props: Props) => {
@@ -34,6 +35,7 @@ const Input = (props: Props) => {
                     {...props}
                     {...field}
                     className={'border-2 border-gray-500 rounded-md'}
+                    // onChange={props.onChange}
                 />
             </div>
         );

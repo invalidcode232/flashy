@@ -1,6 +1,9 @@
 import { Form, FormikProvider, useFormik } from 'formik';
-import React from 'react';
+import React, { FormEvent, useState } from 'react';
 import * as Yup from 'yup';
+import { MultipleChoice } from '../../types/types';
+import FlashcardEssayInput from '../Flashcards/FlashcardEssayInput';
+import FlashcardMultipleChoiceInput from '../Flashcards/FlashcardMultipleChoiceInput';
 import Input from '../UI/Input';
 import OutlineButton from '../UI/OutlineButton';
 
@@ -9,31 +12,65 @@ type Props = {
 };
 
 const NewFlashcardForm = (props: Props) => {
+    const [showMultipleChoiceForm, setShowMultipleChoiceForm] =
+        React.useState(false);
+
     const formik = useFormik({
         initialValues: {
             question: '',
-            answer: '',
+            answerEssay: '',
             isMultiple: false,
             feedback: '',
+            answerChoices: [],
+            correctChoice: '',
         },
         onSubmit: async (values) => {
             console.log(values);
+            console.log(JSON.stringify(values));
         },
-        validationSchema: Yup.object({
+        validationSchema: Yup.object().shape({
             question: Yup.string()
                 .min(3, 'Question must be at least 3 characters')
                 .required('Question is required'),
-            answer: Yup.string()
-                .min(3, 'Answer must be at least 3 characters')
-                .required('Answer is required'),
             isMultiple: Yup.boolean(),
             feedback: Yup.string(),
+            answerEssay: Yup.string().when('isMultiple', {
+                is: false,
+                then: Yup.string().required('Answer is required'),
+            }),
         }),
     });
 
+    const multipleChoiceAddHandler = (
+        e: React.MouseEvent<HTMLInputElement>,
+    ) => {
+        formik.setFieldValue('answerChoices', [
+            ...formik.values.answerChoices,
+            '',
+        ]);
+    };
+
+    const answerInput = showMultipleChoiceForm ? (
+        <FlashcardMultipleChoiceInput
+            choices={formik.values.answerChoices}
+            addMultipleChoice={multipleChoiceAddHandler}
+            formik={formik}
+        />
+    ) : (
+        <FlashcardEssayInput />
+    );
+
+    const formChangeHandler = (e: FormEvent) => {
+        const target = e.target as HTMLInputElement;
+
+        if ((target as HTMLInputElement).name === 'isMultiple') {
+            setShowMultipleChoiceForm(target.checked);
+        }
+    };
+
     return (
         <FormikProvider value={formik}>
-            <Form>
+            <Form onChange={formChangeHandler}>
                 <Input
                     name="question"
                     type="text"
@@ -46,12 +83,7 @@ const NewFlashcardForm = (props: Props) => {
                     autoComplete="off"
                     label="Is multiple choice?"
                 />
-                <Input
-                    name="answer"
-                    type="text"
-                    autoComplete="off"
-                    placeholder="Answer.."
-                />
+                {answerInput}
                 <Input
                     name="feedback"
                     type="text"
