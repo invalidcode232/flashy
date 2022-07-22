@@ -17,18 +17,24 @@ const FlashcardMultipleChoiceInput = (props: Props) => {
                         type="radio"
                         placeholder="New choice"
                         value={choice}
+                        className={'mr-2 scale-125'}
                     />
-                    <Field name={`answerChoices[${index}]`} />
+                    <Field
+                        name={`answerChoices[${index}]`}
+                        className={'my-1 px-1 rounded-sm'}
+                        placeholder={'New choice'}
+                    />
 
                     <br />
                 </React.Fragment>
             ))}
 
-            <input type="radio" disabled className="mr-3" />
+            <input type="radio" disabled className="mr-2" />
             <input
                 type="text"
                 placeholder="Add a choice"
                 onClick={props.addMultipleChoice}
+                className={'my-1 px-1 rounded-sm'}
                 readOnly
             />
         </>
