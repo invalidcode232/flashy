@@ -1,7 +1,7 @@
 import { collections, flashcards } from '@prisma/client';
 
-interface AnswerData {
-    answer: string;
+interface ChoiceData {
+    choice: string;
     is_correct: boolean;
 }
 
@@ -17,12 +17,12 @@ type MultipleChoice = {
     isCorrect: boolean;
 };
 
-interface flashcardFormInit {
+type FlashcardData = {
     question: string;
-    answerEssay: string;
-    isMultiple: boolean;
-    feedback: string;
-}
+    collection_id: number;
+    is_multiple: boolean;
+    choices: ChoiceData[];
+};
 
 interface CollectionContextType {
     collections: collections[];
@@ -30,10 +30,11 @@ interface CollectionContextType {
 }
 
 export type {
-    AnswerData,
+    ChoiceData,
     collections,
     flashcards,
     MultipleChoice,
-    flashcardFormInit,
+    CollectionContextType,
+    FlashcardData,
 };
 // export default CollectionState;

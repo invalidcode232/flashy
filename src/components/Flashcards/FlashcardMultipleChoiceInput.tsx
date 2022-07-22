@@ -1,9 +1,8 @@
 import { Field, FormikProps } from 'formik';
 import React from 'react';
-import { MultipleChoice } from '../../types/types';
 
 type Props = {
-    choices: MultipleChoice[];
+    choices: string[];
     addMultipleChoice: (event: React.MouseEvent<HTMLInputElement>) => void;
     formik: FormikProps<any>;
 };
@@ -17,7 +16,7 @@ const FlashcardMultipleChoiceInput = (props: Props) => {
                         name="correctChoice"
                         type="radio"
                         placeholder="New choice"
-                        value={index.toString()}
+                        value={choice}
                     />
                     <Field name={`answerChoices[${index}]`} />
 

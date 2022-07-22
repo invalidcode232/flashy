@@ -32,10 +32,13 @@ const Collection: NextPage = () => {
 
     return (
         <Layout>
-            <NewFlashcardModal
-                isOpen={newFlashcardModal}
-                onClose={() => setNewFlashcardModal(false)}
-            />
+            {collectionId && (
+                <NewFlashcardModal
+                    isOpen={newFlashcardModal}
+                    onClose={() => setNewFlashcardModal(false)}
+                    collectionId={parseInt(collectionId as string)}
+                />
+            )}
 
             <h1 className="text-3xl font-bold mb-5">{collection?.name}</h1>
 

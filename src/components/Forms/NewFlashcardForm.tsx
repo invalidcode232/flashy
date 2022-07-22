@@ -1,7 +1,7 @@
 import { Form, FormikProvider, useFormik } from 'formik';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent } from 'react';
 import * as Yup from 'yup';
-import { MultipleChoice } from '../../types/types';
+import { ChoiceData, FlashcardData } from '../../types/types';
 import FlashcardEssayInput from '../Flashcards/FlashcardEssayInput';
 import FlashcardMultipleChoiceInput from '../Flashcards/FlashcardMultipleChoiceInput';
 import Input from '../UI/Input';
@@ -9,6 +9,7 @@ import OutlineButton from '../UI/OutlineButton';
 
 type Props = {
     onClose: () => void;
+    collectionId: number;
 };
 
 const NewFlashcardForm = (props: Props) => {
@@ -21,12 +22,40 @@ const NewFlashcardForm = (props: Props) => {
             answerEssay: '',
             isMultiple: false,
             feedback: '',
-            answerChoices: [],
+            answerChoices: [] as string[],
             correctChoice: '',
         },
         onSubmit: async (values) => {
-            console.log(values);
-            console.log(JSON.stringify(values));
+            const choices: ChoiceData[] = [];
+
+            values.answerChoices.forEach((choice) => {
+                return choices.push({
+                    choice: choice,
+                    is_correct: choice === values.correctChoice,
+                });
+            });
+
+            let flashcardData: FlashcardData = {
+                question: values.question,
+                collection_id: props.collectionId,
+                is_multiple: values.isMultiple,
+                choices: choices,
+            };
+
+            const response = await fetch('/api/flashcards/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(flashcardData),
+            });
+
+            if (response.ok) {
+                props.onClose();
+            } else {
+                const err = await response.text();
+                console.log(response.status, err);
+            }
         },
         validationSchema: Yup.object().shape({
             question: Yup.string()
@@ -38,12 +67,14 @@ const NewFlashcardForm = (props: Props) => {
                 is: false,
                 then: Yup.string().required('Answer is required'),
             }),
+            answerChoices: Yup.array().when('isMultiple', {
+                is: true,
+                then: Yup.array().required('Answer is required'),
+            }),
         }),
     });
 
-    const multipleChoiceAddHandler = (
-        e: React.MouseEvent<HTMLInputElement>,
-    ) => {
+    const multipleChoiceAddHandler = () => {
         formik.setFieldValue('answerChoices', [
             ...formik.values.answerChoices,
             '',

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { CollectionContextType, collections } from '../types/types';
 import CollectionContext from './CollectionContext';
 

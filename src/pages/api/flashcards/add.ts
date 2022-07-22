@@ -3,9 +3,9 @@ import Flashcard from '../../../repos/flashcard-repo';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
-        const { question, collection_id, is_multiple, answers } = req.body;
+        const { question, collection_id, is_multiple, choices } = req.body;
 
-        Flashcard.save(question, collection_id, is_multiple, answers)
+        Flashcard.save(question, collection_id, is_multiple, choices)
             .then((createdFlashcard) => {
                 res.status(200).send(createdFlashcard);
             })

@@ -1,12 +1,12 @@
 import client from '../client';
-import { AnswerData } from '../types/types';
+import { ChoiceData } from '../types/types';
 
 class Flashcard {
     static async save(
         question: string,
         collectionId: number,
         is_multiple: boolean,
-        answers: AnswerData[],
+        choices: ChoiceData[],
     ) {
         const flashcard = await client.flashcards.create({
             data: {
@@ -16,22 +16,21 @@ class Flashcard {
             },
         });
 
-        answers.forEach(async (answer) => {
+        for (const choice of choices) {
             await client.flashcard_answers.create({
                 data: {
-                    ...answer,
                     flashcard_id: flashcard.id,
+                    answer: choice.choice,
+                    is_correct: choice.is_correct,
                 },
             });
-        });
+        }
 
         return flashcard;
     }
 
     static async get() {
-        const flashcards = await client.flashcards.findMany();
-
-        return flashcards;
+        return await client.flashcards.findMany();
     }
 
     static async findById(id: number) {
@@ -51,12 +50,10 @@ class Flashcard {
             return null;
         }
 
-        const res = {
+        return {
             ...flashcard,
             answers: answers,
         };
-
-        return res;
     }
 
     static async delete(id: number) {
@@ -75,8 +72,8 @@ class Flashcard {
         return flashcard;
     }
 
-    static async edit(id: number, question: string, answerData: AnswerData) {
-        const flashcard = await client.flashcards.update({
+    static async edit(id: number, question: string, answerData: ChoiceData) {
+        return await client.flashcards.update({
             where: {
                 id: id,
             },
@@ -85,8 +82,6 @@ class Flashcard {
                 ...answerData,
             },
         });
-
-        return flashcard;
     }
 }
 
