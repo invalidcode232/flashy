@@ -17,10 +17,10 @@ class Flashcard {
         });
 
         for (const choice of choices) {
-            await client.flashcard_answers.create({
+            await client.flashcard_choices.create({
                 data: {
                     flashcard_id: flashcard.id,
-                    answer: choice.choice,
+                    choice: choice.choice,
                     is_correct: choice.is_correct,
                 },
             });
@@ -34,26 +34,14 @@ class Flashcard {
     }
 
     static async findById(id: number) {
-        const flashcard = await client.flashcards.findFirst({
+        return await client.flashcards.findFirst({
             where: {
                 id: id,
             },
-        });
-
-        const answers = await client.flashcard_answers.findMany({
-            where: {
-                flashcard_id: id,
+            include: {
+                choices: true,
             },
         });
-
-        if (!flashcard || !answers) {
-            return null;
-        }
-
-        return {
-            ...flashcard,
-            answers: answers,
-        };
     }
 
     static async delete(id: number) {
@@ -63,7 +51,7 @@ class Flashcard {
             },
         });
 
-        await client.flashcard_answers.deleteMany({
+        await client.flashcard_choices.deleteMany({
             where: {
                 flashcard_id: id,
             },

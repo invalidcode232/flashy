@@ -76,15 +76,15 @@ model flashcards {
   is_multiple   Boolean
 
   collection        collections         @relation(fields: [collection_id], references: [id], onDelete: Cascade)
-  flashcard_answers flashcard_answers[]
-  flashcard_history flashcard_history[]
+  choices flashcard_choices[]
+  history flashcard_history[]
 }
 
-model flashcard_answers {
+model flashcard_choices {
   id           Int     @id @default(autoincrement())
   flashcard_id Int
   is_correct   Boolean
-  answer       String  @db.VarChar(100)
+  choice       String  @db.VarChar(100)
 
   flashcard flashcards @relation(fields: [flashcard_id], references: [id], onDelete: Cascade)
 }

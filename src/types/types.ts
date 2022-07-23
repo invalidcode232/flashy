@@ -11,13 +11,8 @@ interface ChoiceData {
 
 // interface CollectionState extends Array<collections> {}
 
-type MultipleChoice = {
-    id: number;
-    choice: string;
-    isCorrect: boolean;
-};
-
 type FlashcardData = {
+    id?: number;
     question: string;
     collection_id: number;
     is_multiple: boolean;
@@ -33,7 +28,6 @@ export type {
     ChoiceData,
     collections,
     flashcards,
-    MultipleChoice,
     CollectionContextType,
     FlashcardData,
 };
