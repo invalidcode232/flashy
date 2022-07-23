@@ -5,8 +5,6 @@ type Props = {
 };
 
 const FlashcardMultipleChoiceDisplay = (props: Props) => {
-    console.log(props.choices);
-
     return (
         <>
             {props.choices.map((choice, index) => {

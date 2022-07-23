@@ -10,7 +10,15 @@ const Layout = (props: Props) => {
     return (
         <div className="flex">
             <Sidebar />
-            <div className="w-full" style={{ padding: '1.25rem' }}>
+            <div
+                style={{
+                    position: 'relative',
+                    marginLeft: '7rem',
+                    marginTop: '1rem',
+                    width: '100%',
+                    overflowY: 'scroll',
+                }}
+            >
                 <Navbar />
                 <main>{props.children}</main>
             </div>
