@@ -74,6 +74,7 @@ model flashcards {
   collection_id Int
   question      String  @db.VarChar(300)
   is_multiple   Boolean
+  feedback      String?
 
   collection        collections         @relation(fields: [collection_id], references: [id], onDelete: Cascade)
   choices flashcard_choices[]
