@@ -1,4 +1,4 @@
-import { FaPen } from 'react-icons/fa';
+import { FaPen, FaTrash } from 'react-icons/fa';
 import Card from '../UI/Card';
 import { useState } from 'react';
 import FlashcardMultipleChoiceDisplay from './FlashcardMultipleChoiceDisplay';
@@ -17,9 +17,14 @@ function FlashcardCard(props: Props) {
                 <h1 className={'text-xl font-semibold'}>
                     {props.flashcard.question}
                 </h1>
-                <button className="bg-blue-500 p-3 hover:bg-blue-700 text-white hover:text-white rounded-md">
-                    <FaPen />
-                </button>
+                <div>
+                    <button className="bg-blue-500 p-3 hover:bg-blue-700 text-white hover:text-white rounded-md mr-2">
+                        <FaPen />
+                    </button>
+                    <button className="bg-red-500 p-3 hover:bg-red-700 text-white hover:text-white rounded-md">
+                        <FaTrash />
+                    </button>
+                </div>
             </div>
             <h2 className="text-sm text-gray-500 mb-1">
                 {props.flashcard.is_multiple
@@ -28,7 +33,7 @@ function FlashcardCard(props: Props) {
             </h2>
             <button
                 className={
-                    'p-3 text-gray-500 text-left rounded-md w-max hover:shadow-xl'
+                    'p-2 text-gray-500 text-left rounded-md w-max hover:shadow-xl'
                 }
                 onClick={() => setShowAnswer(!showAnswer)}
             >
