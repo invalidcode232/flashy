@@ -5,8 +5,10 @@ import { useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CollectionInfo from '../../../components/Collections/CollectionInfo';
 import CollectionPlayCard from '../../../components/Collections/CollectionPlayCard';
+import FlashcardCard from '../../../components/Flashcards/FlashcardCard';
 import NewFlashcardModal from '../../../components/Modals/NewFlashcardModal';
 import Layout from '../../../layouts/Dashboard/Layout';
+import { FlashcardData } from '../../../types/types';
 
 const Collection: NextPage = () => {
     const [newFlashcardModal, setNewFlashcardModal] = useState(false);
@@ -14,6 +16,9 @@ const Collection: NextPage = () => {
     const router = useRouter();
 
     const [collection, setCollection] = useState<collections | undefined>(
+        undefined,
+    );
+    const [flashcards, setFlashcards] = useState<FlashcardData[] | undefined>(
         undefined,
     );
 
@@ -24,9 +29,19 @@ const Collection: NextPage = () => {
             fetch(`/api/collections/${collectionId?.toString()}`).then(
                 async (response) => {
                     const data = await response.json();
+
                     setCollection(data);
                 },
             );
+
+            fetch(
+                `/api/collections/${collectionId?.toString()}/flashcards`,
+            ).then(async (response) => {
+                const data: FlashcardData[] = await response.json();
+                console.log(data);
+
+                setFlashcards(data);
+            });
         }
     }, [collectionId]);
 
@@ -53,18 +68,23 @@ const Collection: NextPage = () => {
                 Play all <strong>52</strong> flashcards in this collection.
             </CollectionPlayCard>
 
-            <div className="flex justify-between mt-6">
+            <div className="flex justify-between mt-6 mb-3">
                 <h1 className="text-2xl mb-5 font-semibold">Flashcards</h1>
 
                 <button
                     className={
-                        'bg-white px-5 py-1 text-xl border-2 border-blue-500 text-blue-500 hover:cursor-pointer rounded-md hover:bg-blue-500 hover:border-white hover:text-white'
+                        'bg-white px-5 mr-5 py-1 text-xl border-2 border-blue-500 text-blue-500 hover:cursor-pointer rounded-md hover:bg-blue-500 hover:border-white hover:text-white'
                     }
                     onClick={() => setNewFlashcardModal(true)}
                 >
                     <FaPlus />
                 </button>
             </div>
+
+            {flashcards &&
+                flashcards.map((flashcard) => (
+                    <FlashcardCard key={flashcard?.id} flashcard={flashcard} />
+                ))}
         </Layout>
     );
 };
