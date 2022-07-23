@@ -36,48 +36,40 @@ import client from '../client';
 
 class Collection {
     static async save(name: string, userId: string) {
-        const createdCollection = await client.collections.create({
+        return await client.collections.create({
             data: {
                 name: name,
                 userId: userId,
             },
         });
-
-        return createdCollection;
     }
 
     static async findByUser(userId: string) {
-        const collection = await client.collections.findMany({
+        return await client.collections.findMany({
             where: {
                 userId: userId,
             },
         });
-
-        return collection;
     }
 
     static async findById(id: number) {
-        const collection = await client.collections.findFirst({
+        return await client.collections.findFirst({
             where: {
                 id: id,
             },
         });
-
-        return collection;
     }
 
     static async delete(id: number) {
-        const collection = await client.collections.delete({
+        return await client.collections.delete({
             where: {
                 id: id,
             },
         });
-
-        return collection;
     }
 
     static async edit(id: number, name: string) {
-        const collection = await client.collections.update({
+        return await client.collections.update({
             where: {
                 id: id,
             },
@@ -85,8 +77,6 @@ class Collection {
                 name: name,
             },
         });
-
-        return collection;
     }
 }
 
