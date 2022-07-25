@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Layout from '../../layouts/Dashboard/Layout';
-import { useFormik, Form, FormikProvider, useField } from 'formik';
+import { useFormik, Form, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 import Input from '../../components/UI/Input';
 
@@ -16,6 +16,8 @@ const Dashboard: NextPage = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(values),
+            }).catch((err) => {
+                throw new Error(err);
             });
         },
         validationSchema: Yup.object({

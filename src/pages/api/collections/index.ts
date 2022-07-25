@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Collection from '../../../repos/collection-repo';
 import { getSession } from 'next-auth/react';
-import Flashcard from '../../../repos/flashcard-repo';
 
 export default async function handler(
     req: NextApiRequest,

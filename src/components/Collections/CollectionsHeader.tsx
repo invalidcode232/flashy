@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import NewCollectionModal from '../Modals/NewCollectionModal';
 
-type Props = {};
-
-const CollectionsHeader = (props: Props) => {
+const CollectionsHeader = () => {
     const [newCollectionModal, setNewCollectionModal] = useState(false);
 
     return (

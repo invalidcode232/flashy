@@ -1,10 +1,7 @@
-import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import React from 'react';
 
-type Props = {};
-
-const NoLogin = (props: Props) => {
+const NoLogin = () => {
     return (
         <>
             <h1 className={'text-2xl'}>You are currently not logged in</h1>

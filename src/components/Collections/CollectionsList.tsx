@@ -3,9 +3,7 @@ import React, { useContext } from 'react';
 import CollectionContext from '../../contexts/CollectionContext';
 import CollectionCard from './CollectionCard';
 
-type Props = {};
-
-const CollectionsList = (props: Props) => {
+const CollectionsList = () => {
     const collectionCtx = useContext(CollectionContext);
 
     return (

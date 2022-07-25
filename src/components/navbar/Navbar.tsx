@@ -3,9 +3,7 @@ import NavbarButtons from './NavbarButtons';
 import NavbarSegment from './NavbarSegment';
 import SearchBar from './SearchBar';
 
-type Props = {};
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
     return (
         <nav className="flex justify-between flex-row flex-wrap text-black w-full mb-7">
             <NavbarSegment>

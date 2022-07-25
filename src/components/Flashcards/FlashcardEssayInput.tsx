@@ -1,9 +1,7 @@
 import React from 'react';
 import Input from '../UI/Input';
 
-type Props = {};
-
-const FlashcardEssayInput = (props: Props) => {
+const FlashcardEssayInput = () => {
     return <Input name="answerEssay" label={'Answer'} />;
 };
 

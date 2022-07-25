@@ -1,9 +1,7 @@
 import React from 'react';
 import { FaSearch } from 'react-icons/fa';
 
-type Props = {};
-
-const SearchBar = (props: Props) => {
+const SearchBar = () => {
     return (
         <div className="flex items-center flex-shrink-0 text-white mr-6 w-full">
             <span className="text-gray-400 mr-2">

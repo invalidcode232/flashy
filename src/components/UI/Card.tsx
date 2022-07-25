@@ -1,7 +1,4 @@
-import { collections } from '@prisma/client';
-import Link from 'next/link';
 import React from 'react';
-import { FaCog } from 'react-icons/fa';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;

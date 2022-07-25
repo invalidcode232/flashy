@@ -2,9 +2,7 @@ import React from 'react';
 import { FaBell, FaUser } from 'react-icons/fa';
 import ShadowButton from '../UI/ShadowButton';
 
-type Props = {};
-
-const NavbarButtons = (props: Props) => {
+const NavbarButtons = () => {
     return (
         <div>
             <ShadowButton>

@@ -1,7 +1,7 @@
 import { collections } from '@prisma/client';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CollectionInfo from '../../../components/Collections/CollectionInfo';
 import CollectionPlayCard from '../../../components/Collections/CollectionPlayCard';
@@ -9,6 +9,18 @@ import FlashcardCard from '../../../components/Flashcards/FlashcardCard';
 import NewFlashcardModal from '../../../components/Modals/NewFlashcardModal';
 import Layout from '../../../layouts/Dashboard/Layout';
 import { FlashcardData } from '../../../types/types';
+import {
+    Action,
+    ACTION_EVENTS,
+    useFlashcardReducer,
+} from '../../../reducers/flashcard-reducer';
+
+const mapDispatch = (dispatch: Dispatch<Action>) => ({
+    setFlashcards: (flashcards: FlashcardData[]) =>
+        dispatch({ type: ACTION_EVENTS.SET_FLASHCARDS, payload: flashcards }),
+    addFlashcard: (flashcard: FlashcardData) =>
+        dispatch({ type: ACTION_EVENTS.ADD_FLASHCARD, payload: flashcard }),
+});
 
 const Collection: NextPage = () => {
     const [newFlashcardModal, setNewFlashcardModal] = useState(false);
@@ -18,9 +30,9 @@ const Collection: NextPage = () => {
     const [collection, setCollection] = useState<collections | undefined>(
         undefined,
     );
-    const [flashcards, setFlashcards] = useState<FlashcardData[] | undefined>(
-        undefined,
-    );
+
+    const [flashcardState, flashcardDispatcher] = useFlashcardReducer();
+    const actions = mapDispatch(flashcardDispatcher);
 
     const { collectionId } = router.query;
 
@@ -38,12 +50,11 @@ const Collection: NextPage = () => {
                 `/api/collections/${collectionId?.toString()}/flashcards`,
             ).then(async (response) => {
                 const data: FlashcardData[] = await response.json();
-                console.log(data);
 
-                setFlashcards(data);
+                actions.setFlashcards(data);
             });
         }
-    }, [collectionId]);
+    }, [collectionId, actions]);
 
     return (
         <Layout>
@@ -52,6 +63,7 @@ const Collection: NextPage = () => {
                     isOpen={newFlashcardModal}
                     onClose={() => setNewFlashcardModal(false)}
                     collectionId={parseInt(collectionId as string)}
+                    addFlashcardState={actions.addFlashcard}
                 />
             )}
 
@@ -81,8 +93,8 @@ const Collection: NextPage = () => {
                 </button>
             </div>
 
-            {flashcards &&
-                flashcards.map((flashcard) => (
+            {flashcardState &&
+                flashcardState.map((flashcard) => (
                     <FlashcardCard key={flashcard?.id} flashcard={flashcard} />
                 ))}
         </Layout>
