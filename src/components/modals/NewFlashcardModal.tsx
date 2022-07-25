@@ -1,11 +1,13 @@
 import React from 'react';
 import NewFlashcardForm from '../Forms/NewFlashcardForm';
 import Modal from '../UI/Modal';
+import { FlashcardData } from '../../types/types';
 
 type Props = {
     isOpen: boolean;
     collectionId: number;
     onClose: () => void;
+    addFlashcardState: (flashcard: FlashcardData) => void;
 };
 
 const NewFlashcardModal = (props: Props) => {
@@ -15,6 +17,7 @@ const NewFlashcardModal = (props: Props) => {
             <NewFlashcardForm
                 onClose={props.onClose}
                 collectionId={props.collectionId}
+                addFlashcardState={props.addFlashcardState}
             />
         </Modal>
     );

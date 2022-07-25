@@ -10,6 +10,7 @@ import OutlineButton from '../UI/OutlineButton';
 type Props = {
     onClose: () => void;
     collectionId: number;
+    addFlashcardState: (flashcard: FlashcardData) => void;
 };
 
 const NewFlashcardForm = (props: Props) => {
@@ -51,6 +52,9 @@ const NewFlashcardForm = (props: Props) => {
             });
 
             if (response.ok) {
+                const flashcardData = await response.json();
+                props.addFlashcardState(flashcardData);
+
                 props.onClose();
             } else {
                 const err = await response.text();

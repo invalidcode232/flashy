@@ -1,5 +1,5 @@
 import client from '../client';
-import { ChoiceData } from '../types/types';
+import {ChoiceData, FlashcardData} from '../types/types';
 
 class Flashcard {
     static async save(
@@ -8,7 +8,7 @@ class Flashcard {
         is_multiple: boolean,
         choices: ChoiceData[],
     ) {
-        const flashcard = await client.flashcards.create({
+        const flashcardMeta = await client.flashcards.create({
             data: {
                 question: question,
                 collection_id: collectionId,
@@ -16,17 +16,25 @@ class Flashcard {
             },
         });
 
+        const choiceData = [];
         for (const choice of choices) {
-            await client.flashcard_choices.create({
+            const choiceRes = await client.flashcard_choices.create({
                 data: {
-                    flashcard_id: flashcard.id,
+                    flashcard_id: flashcardMeta.id,
                     choice: choice.choice,
                     is_correct: choice.is_correct,
                 },
             });
+
+            choiceData.push(choiceRes);
         }
 
-        return flashcard;
+        const flashcardData: FlashcardData = {
+            ...flashcardMeta,
+            choices: choiceData,
+        };
+
+        return flashcardData;
     }
 
     static async get() {
