@@ -7,7 +7,9 @@ type Props = {
     isOpen: boolean;
     collectionId: number;
     onClose: () => void;
-    addFlashcardState: (flashcard: FlashcardData) => void;
+    submitHandler: (flashcard: FlashcardData) => void;
+    edit?: boolean;
+    flashcard?: FlashcardData;
 };
 
 const FlashcardDataModal = (props: Props) => {
@@ -17,7 +19,7 @@ const FlashcardDataModal = (props: Props) => {
             <FlashcardDataForm
                 onClose={props.onClose}
                 collectionId={props.collectionId}
-                addFlashcardState={props.addFlashcardState}
+                submitHandler={props.submitHandler}
             />
         </Modal>
     );

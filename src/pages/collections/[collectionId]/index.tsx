@@ -48,6 +48,7 @@ const Collection: NextPage = () => {
 
     useEffect(() => {
         if (collectionId) {
+            // fetch collection data
             fetch(`/api/collections/${collectionId?.toString()}`).then(
                 async (response) => {
                     const data = await response.json();
@@ -55,15 +56,18 @@ const Collection: NextPage = () => {
                 },
             );
 
+            // fetch all flashcards in the collection
             fetch(
                 `/api/collections/${collectionId?.toString()}/flashcards`,
             ).then(async (response) => {
                 const data: FlashcardData[] = await response.json();
-                // actions.setFlashcards(data);
                 flashcardDispatcher({
                     type: ACTION_EVENTS.SET_FLASHCARDS,
                     payload: data,
                 });
+
+                // this will cause an infinite loop so we wont use it
+                // actions.setFlashcards(data);
             });
         }
     }, [collectionId, flashcardDispatcher]);
@@ -75,7 +79,7 @@ const Collection: NextPage = () => {
                     isOpen={newFlashcardModal}
                     onClose={() => setNewFlashcardModal(false)}
                     collectionId={parseInt(collectionId as string)}
-                    addFlashcardState={actions.addFlashcard}
+                    submitHandler={actions.addFlashcard}
                 />
             )}
 

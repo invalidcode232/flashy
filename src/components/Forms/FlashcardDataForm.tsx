@@ -10,7 +10,9 @@ import OutlineButton from '../UI/OutlineButton';
 type Props = {
     onClose: () => void;
     collectionId: number;
-    addFlashcardState: (flashcard: FlashcardData) => void;
+    submitHandler: (flashcard: FlashcardData) => void;
+    edit?: boolean;
+    flashcard?: FlashcardData;
 };
 
 const FlashcardDataForm = (props: Props) => {
@@ -19,11 +21,15 @@ const FlashcardDataForm = (props: Props) => {
 
     const formik = useFormik({
         initialValues: {
-            question: '',
+            question: props.flashcard ? props.flashcard.question : '',
             answerEssay: '',
-            isMultiple: false,
-            feedback: '',
-            answerChoices: [] as string[],
+            isMultiple: props.flashcard ? props.flashcard.is_multiple : false,
+            feedback: props.flashcard ? props.flashcard.feedback : '',
+            answerChoices: props.flashcard
+                ? props.flashcard.choices
+                      .filter((choice) => (choice.is_correct = false))
+                      .map((choice) => choice.choice)
+                : [],
             correctChoice: '',
         },
         onSubmit: async (values) => {
@@ -41,6 +47,7 @@ const FlashcardDataForm = (props: Props) => {
                 collection_id: props.collectionId,
                 is_multiple: values.isMultiple,
                 choices: choices,
+                feedback: values.feedback,
             };
 
             const response = await fetch('/api/flashcards/add', {
@@ -53,7 +60,7 @@ const FlashcardDataForm = (props: Props) => {
 
             if (response.ok) {
                 const flashcardData = await response.json();
-                props.addFlashcardState(flashcardData);
+                props.submitHandler(flashcardData);
 
                 props.onClose();
             } else {

@@ -3,6 +3,7 @@ import Card from '../UI/Card';
 import { useState } from 'react';
 import FlashcardMultipleChoiceDisplay from './FlashcardMultipleChoiceDisplay';
 import { FlashcardData } from '../../types/types';
+import FlashcardDataModal from '../Modals/FlashcardDataModal';
 
 type Props = {
     flashcard: FlashcardData;
@@ -11,6 +12,7 @@ type Props = {
 
 function FlashcardCard(props: Props) {
     const [showAnswer, setShowAnswer] = useState(false);
+    const [editFlashcardModal, setEditFlashcardModal] = useState(false);
 
     const deleteFlashcardHandler = async () => {
         props.deleteFlashcardState(props.flashcard);
@@ -22,12 +24,26 @@ function FlashcardCard(props: Props) {
 
     return (
         <Card className={'py-3 px-4 my-5'}>
+            {editFlashcardModal && (
+                <FlashcardDataModal
+                    isOpen={editFlashcardModal}
+                    onClose={() => setEditFlashcardModal(false)}
+                    collectionId={props.flashcard.collection_id}
+                    edit={true}
+                    submitHandler={props.deleteFlashcardState}
+                    flashcard={props.flashcard}
+                />
+            )}
+
             <div className="flex justify-between">
                 <h1 className={'text-xl font-semibold'}>
                     {props.flashcard.question}
                 </h1>
                 <div>
-                    <button className="bg-blue-500 p-3 hover:bg-blue-700 text-white hover:text-white rounded-md mr-2">
+                    <button
+                        className="bg-blue-500 p-3 hover:bg-blue-700 text-white hover:text-white rounded-md mr-2"
+                        onClick={() => setEditFlashcardModal(true)}
+                    >
                         <FaPen />
                     </button>
                     <button
