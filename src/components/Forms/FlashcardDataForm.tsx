@@ -13,7 +13,7 @@ type Props = {
     addFlashcardState: (flashcard: FlashcardData) => void;
 };
 
-const NewFlashcardForm = (props: Props) => {
+const FlashcardDataForm = (props: Props) => {
     const [showMultipleChoiceForm, setShowMultipleChoiceForm] =
         React.useState(false);
 
@@ -139,4 +139,4 @@ const NewFlashcardForm = (props: Props) => {
     );
 };
 
-export default NewFlashcardForm;
+export default FlashcardDataForm;

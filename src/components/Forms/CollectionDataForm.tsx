@@ -9,7 +9,7 @@ type Props = {
     onClose: () => void;
 };
 
-const NewCollectionForm = (props: Props) => {
+const CollectionDataForm = (props: Props) => {
     const collectionCtx = useContext(CollectionContext);
 
     const formik = useFormik({
@@ -61,4 +61,4 @@ const NewCollectionForm = (props: Props) => {
     );
 };
 
-export default NewCollectionForm;
+export default CollectionDataForm;

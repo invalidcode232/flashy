@@ -6,7 +6,7 @@ import { FaPlus } from 'react-icons/fa';
 import CollectionInfo from '../../../components/Collections/CollectionInfo';
 import CollectionPlayCard from '../../../components/Collections/CollectionPlayCard';
 import FlashcardCard from '../../../components/Flashcards/FlashcardCard';
-import NewFlashcardModal from '../../../components/Modals/NewFlashcardModal';
+import FlashcardDataModal from '../../../components/Modals/FlashcardDataModal';
 import Layout from '../../../layouts/Dashboard/Layout';
 import { FlashcardData } from '../../../types/types';
 import {
@@ -15,14 +15,22 @@ import {
     useFlashcardReducer,
 } from '../../../reducers/flashcard-reducer';
 
-const mapDispatch = (dispatch: Dispatch<Action>) => ({
-    setFlashcards: (flashcards: FlashcardData[]) =>
-        dispatch({ type: ACTION_EVENTS.SET_FLASHCARDS, payload: flashcards }),
-    addFlashcard: (flashcard: FlashcardData) =>
-        dispatch({ type: ACTION_EVENTS.ADD_FLASHCARD, payload: flashcard }),
-    deleteFlashcard: (flashcard: FlashcardData) =>
-        dispatch({ type: ACTION_EVENTS.DELETE_FLASHCARD, payload: flashcard }),
-});
+const mapDispatch = (dispatch: Dispatch<Action>) => {
+    return {
+        setFlashcards: (flashcards: FlashcardData[]) =>
+            dispatch({
+                type: ACTION_EVENTS.SET_FLASHCARDS,
+                payload: flashcards,
+            }),
+        addFlashcard: (flashcard: FlashcardData) =>
+            dispatch({ type: ACTION_EVENTS.ADD_FLASHCARD, payload: flashcard }),
+        deleteFlashcard: (flashcard: FlashcardData) =>
+            dispatch({
+                type: ACTION_EVENTS.DELETE_FLASHCARD,
+                payload: flashcard,
+            }),
+    };
+};
 
 const Collection: NextPage = () => {
     const [newFlashcardModal, setNewFlashcardModal] = useState(false);
@@ -34,16 +42,15 @@ const Collection: NextPage = () => {
     );
 
     const [flashcardState, flashcardDispatcher] = useFlashcardReducer();
-    const actions = mapDispatch(flashcardDispatcher);
 
     const { collectionId } = router.query;
+    const actions = mapDispatch(flashcardDispatcher);
 
     useEffect(() => {
         if (collectionId) {
             fetch(`/api/collections/${collectionId?.toString()}`).then(
                 async (response) => {
                     const data = await response.json();
-
                     setCollection(data);
                 },
             );
@@ -52,16 +59,19 @@ const Collection: NextPage = () => {
                 `/api/collections/${collectionId?.toString()}/flashcards`,
             ).then(async (response) => {
                 const data: FlashcardData[] = await response.json();
-
-                actions.setFlashcards(data);
+                // actions.setFlashcards(data);
+                flashcardDispatcher({
+                    type: ACTION_EVENTS.SET_FLASHCARDS,
+                    payload: data,
+                });
             });
         }
-    }, [collectionId, actions]);
+    }, [collectionId, flashcardDispatcher]);
 
     return (
         <Layout>
             {collectionId && (
-                <NewFlashcardModal
+                <FlashcardDataModal
                     isOpen={newFlashcardModal}
                     onClose={() => setNewFlashcardModal(false)}
                     collectionId={parseInt(collectionId as string)}

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
-import NewCollectionModal from '../Modals/NewCollectionModal';
+import CollectionDataModal from '../Modals/CollectionDataModal';
 
 const CollectionsHeader = () => {
     const [newCollectionModal, setNewCollectionModal] = useState(false);
 
     return (
         <>
-            <NewCollectionModal
+            <CollectionDataModal
                 isOpen={newCollectionModal}
                 onClose={() => setNewCollectionModal(false)}
             />
