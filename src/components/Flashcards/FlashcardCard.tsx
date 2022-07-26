@@ -6,10 +6,19 @@ import { FlashcardData } from '../../types/types';
 
 type Props = {
     flashcard: FlashcardData;
+    deleteFlashcardState: (flashcard: FlashcardData) => void;
 };
 
 function FlashcardCard(props: Props) {
     const [showAnswer, setShowAnswer] = useState(false);
+
+    const deleteFlashcardHandler = async () => {
+        props.deleteFlashcardState(props.flashcard);
+
+        await fetch(`/api/flashcards/${props.flashcard.id}/delete`, {
+            method: 'DELETE',
+        });
+    };
 
     return (
         <Card className={'py-3 px-4 my-5'}>
@@ -21,7 +30,10 @@ function FlashcardCard(props: Props) {
                     <button className="bg-blue-500 p-3 hover:bg-blue-700 text-white hover:text-white rounded-md mr-2">
                         <FaPen />
                     </button>
-                    <button className="bg-red-500 p-3 hover:bg-red-700 text-white hover:text-white rounded-md">
+                    <button
+                        className="bg-red-500 p-3 hover:bg-red-700 text-white hover:text-white rounded-md"
+                        onClick={deleteFlashcardHandler}
+                    >
                         <FaTrash />
                     </button>
                 </div>

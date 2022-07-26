@@ -20,6 +20,8 @@ const mapDispatch = (dispatch: Dispatch<Action>) => ({
         dispatch({ type: ACTION_EVENTS.SET_FLASHCARDS, payload: flashcards }),
     addFlashcard: (flashcard: FlashcardData) =>
         dispatch({ type: ACTION_EVENTS.ADD_FLASHCARD, payload: flashcard }),
+    deleteFlashcard: (flashcard: FlashcardData) =>
+        dispatch({ type: ACTION_EVENTS.DELETE_FLASHCARD, payload: flashcard }),
 });
 
 const Collection: NextPage = () => {
@@ -95,7 +97,11 @@ const Collection: NextPage = () => {
 
             {flashcardState &&
                 flashcardState.map((flashcard) => (
-                    <FlashcardCard key={flashcard?.id} flashcard={flashcard} />
+                    <FlashcardCard
+                        key={flashcard?.id}
+                        flashcard={flashcard}
+                        deleteFlashcardState={actions.deleteFlashcard}
+                    />
                 ))}
         </Layout>
     );

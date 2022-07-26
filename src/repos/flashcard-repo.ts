@@ -1,5 +1,5 @@
 import client from '../client';
-import {ChoiceData, FlashcardData} from '../types/types';
+import { ChoiceData, FlashcardData } from '../types/types';
 
 class Flashcard {
     static async save(
@@ -53,19 +53,14 @@ class Flashcard {
     }
 
     static async delete(id: number) {
-        const flashcard = await client.flashcards.delete({
+        return await client.flashcards.delete({
             where: {
                 id: id,
             },
-        });
-
-        await client.flashcard_choices.deleteMany({
-            where: {
-                flashcard_id: id,
+            include: {
+                choices: true,
             },
         });
-
-        return flashcard;
     }
 
     static async edit(id: number, question: string, answerData: ChoiceData) {

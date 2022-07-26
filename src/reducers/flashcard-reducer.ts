@@ -13,7 +13,7 @@ enum ACTION_EVENTS {
 type Action =
     | { type: ACTION_EVENTS.SET_FLASHCARDS; payload: FlashcardData[] }
     | { type: ACTION_EVENTS.ADD_FLASHCARD; payload: FlashcardData }
-    | { type: ACTION_EVENTS.DELETE_FLASHCARD; payload: number }
+    | { type: ACTION_EVENTS.DELETE_FLASHCARD; payload: FlashcardData }
     | { type: ACTION_EVENTS.EDIT_FLASHCARD; payload: FlashcardData };
 
 const reducer = (state: FlashcardData[], action: Action): FlashcardData[] => {
@@ -22,6 +22,10 @@ const reducer = (state: FlashcardData[], action: Action): FlashcardData[] => {
             return action.payload;
         case ACTION_EVENTS.ADD_FLASHCARD:
             return [...state, action.payload];
+        case ACTION_EVENTS.DELETE_FLASHCARD:
+            return state.filter(
+                (flashcard) => flashcard.id !== action.payload.id,
+            );
         default:
             return state;
     }
