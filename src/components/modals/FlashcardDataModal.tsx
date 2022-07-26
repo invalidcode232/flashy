@@ -15,11 +15,15 @@ type Props = {
 const FlashcardDataModal = (props: Props) => {
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose}>
-            <h1 className="text-2xl mb-5">New Flashcard</h1>
+            <h1 className="text-2xl mb-5">
+                {!props.edit ? 'New flashcard' : 'Edit flashcard'}
+            </h1>
             <FlashcardDataForm
                 onClose={props.onClose}
                 collectionId={props.collectionId}
                 submitHandler={props.submitHandler}
+                edit={true}
+                flashcard={props.flashcard}
             />
         </Modal>
     );
