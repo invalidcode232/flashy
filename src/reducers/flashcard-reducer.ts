@@ -31,9 +31,6 @@ const reducer = (state: FlashcardData[], action: Action): FlashcardData[] => {
     }
 };
 
-const useFlashcardReducer = () => {
-    console.log('useFlashcardReducer');
-    return useReducer(reducer, INITIAL_STATE);
-};
+const useFlashcardReducer = () => useReducer(reducer, INITIAL_STATE);
 export { useFlashcardReducer, ACTION_EVENTS };
 export type { Action };
