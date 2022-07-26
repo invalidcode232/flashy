@@ -19,18 +19,20 @@ const FlashcardDataForm = (props: Props) => {
     const [showMultipleChoiceForm, setShowMultipleChoiceForm] =
         React.useState(false);
 
+    console.log(props.flashcard?.is_multiple);
+
     const formik = useFormik({
         initialValues: {
-            question: props.flashcard ? props.flashcard.question : '',
+            question: props.flashcard?.question || '',
             answerEssay: '',
-            isMultiple: props.flashcard ? props.flashcard.is_multiple : false,
-            feedback: props.flashcard ? props.flashcard.feedback : '',
-            answerChoices: props.flashcard
-                ? props.flashcard.choices
-                      .filter((choice) => (choice.is_correct = false))
-                      .map((choice) => choice.choice)
-                : [],
-            correctChoice: '',
+            isMultiple: props.flashcard?.is_multiple || false,
+            feedback: props.flashcard?.feedback || '',
+            answerChoices:
+                props.flashcard?.choices.map((choice) => choice.choice) ||
+                ([] as string[]),
+            correctChoice:
+                props.flashcard?.choices.find((choice) => choice.is_correct)
+                    ?.choice || '',
         },
         onSubmit: async (values) => {
             const choices: ChoiceData[] = [];
@@ -122,7 +124,6 @@ const FlashcardDataForm = (props: Props) => {
                 <Input
                     name="isMultiple"
                     type="checkbox"
-                    autoComplete="off"
                     label="Is multiple choice?"
                 />
                 {answerInput}
