@@ -19,19 +19,17 @@ const FlashcardDataForm = (props: Props) => {
     const [showMultipleChoiceForm, setShowMultipleChoiceForm] =
         React.useState(false);
 
-    console.log(props.flashcard?.is_multiple);
-
     const formik = useFormik({
         initialValues: {
             question: props.flashcard?.question || '',
             answerEssay: '',
-            isMultiple: props.flashcard?.is_multiple || false,
+            isMultiple: props.flashcard?.isMultiple || false,
             feedback: props.flashcard?.feedback || '',
             answerChoices:
                 props.flashcard?.choices.map((choice) => choice.choice) ||
                 ([] as string[]),
             correctChoice:
-                props.flashcard?.choices.find((choice) => choice.is_correct)
+                props.flashcard?.choices.find((choice) => choice.isCorrect)
                     ?.choice || '',
         },
         onSubmit: async (values) => {
@@ -40,17 +38,19 @@ const FlashcardDataForm = (props: Props) => {
             values.answerChoices.forEach((choice) => {
                 return choices.push({
                     choice: choice,
-                    is_correct: choice === values.correctChoice,
+                    isCorrect: choice === values.correctChoice,
                 });
             });
 
             let flashcardData: FlashcardData = {
                 question: values.question,
-                collection_id: props.collectionId,
-                is_multiple: values.isMultiple,
+                collectionId: props.collectionId,
+                isMultiple: values.isMultiple,
                 choices: choices,
                 feedback: values.feedback,
             };
+
+            console.log(JSON.stringify(flashcardData));
 
             const response = await fetch('/api/flashcards/add', {
                 method: 'POST',
@@ -59,6 +59,8 @@ const FlashcardDataForm = (props: Props) => {
                 },
                 body: JSON.stringify(flashcardData),
             });
+
+            console.log(response);
 
             if (response.ok) {
                 const flashcardData = await response.json();

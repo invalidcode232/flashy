@@ -2,20 +2,14 @@ import { collections, flashcards } from '@prisma/client';
 
 interface ChoiceData {
     choice: string;
-    is_correct: boolean;
+    isCorrect: boolean;
 }
-
-// interface CollectionState {
-//     collections: collections[];
-// }
-
-// interface CollectionState extends Array<collections> {}
 
 type FlashcardData = {
     id?: number;
     question: string;
-    collection_id: number;
-    is_multiple: boolean;
+    collectionId: number;
+    isMultiple: boolean;
     feedback: string;
     choices: ChoiceData[];
 };

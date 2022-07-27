@@ -1,36 +1,40 @@
 import client from '../client';
 import { ChoiceData, FlashcardData } from '../types/types';
+import { camelize } from '../utils/utils';
 
 class Flashcard {
     static async save(
         question: string,
         collectionId: number,
-        is_multiple: boolean,
+        isMultiple: boolean,
         choices: ChoiceData[],
     ) {
         const flashcardMeta = await client.flashcards.create({
             data: {
                 question: question,
                 collection_id: collectionId,
-                is_multiple: is_multiple,
+                is_multiple: isMultiple,
             },
         });
 
-        const choiceData = [];
+        const choiceData: ChoiceData[] = [];
         for (const choice of choices) {
             const choiceRes = await client.flashcard_choices.create({
                 data: {
                     flashcard_id: flashcardMeta.id,
                     choice: choice.choice,
-                    is_correct: choice.is_correct,
+                    is_correct: choice.isCorrect,
                 },
             });
 
-            choiceData.push(choiceRes);
+            choiceData.push({
+                choice: choiceRes.choice,
+                isCorrect: choiceRes.is_correct,
+            });
         }
 
         const flashcardData: FlashcardData = {
-            ...flashcardMeta,
+            ...(camelize(flashcardMeta) as FlashcardData),
             choices: choiceData,
         };
 

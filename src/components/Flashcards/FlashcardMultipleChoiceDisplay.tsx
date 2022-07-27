@@ -13,7 +13,7 @@ const FlashcardMultipleChoiceDisplay = (props: Props) => {
                     <div
                         key={index}
                         className={`p-2 text-md rounded-md flex text-gray-600 justify-between ${
-                            choice.is_correct && 'bg-green-100'
+                            choice.isCorrect && 'bg-green-100'
                         }`}
                     >
                         <div>
@@ -22,11 +22,11 @@ const FlashcardMultipleChoiceDisplay = (props: Props) => {
                                 // disabled={true}
                                 readOnly={true}
                                 key={index}
-                                defaultChecked={choice.is_correct}
+                                defaultChecked={choice.isCorrect}
                             />
                             <span className={'ml-3'}>{choice.choice}</span>
                         </div>
-                        {choice.is_correct && (
+                        {choice.isCorrect && (
                             <div>
                                 <FaCheck className={'text-green-500'} />
                             </div>

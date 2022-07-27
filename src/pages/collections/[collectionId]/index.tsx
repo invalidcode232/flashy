@@ -36,14 +36,13 @@ const Collection: NextPage = () => {
     const [newFlashcardModal, setNewFlashcardModal] = useState(false);
 
     const router = useRouter();
+    const { collectionId } = router.query;
 
     const [collection, setCollection] = useState<collections | undefined>(
         undefined,
     );
 
     const [flashcardState, flashcardDispatcher] = useFlashcardReducer();
-
-    const { collectionId } = router.query;
     const actions = mapDispatch(flashcardDispatcher);
 
     useEffect(() => {
@@ -109,14 +108,13 @@ const Collection: NextPage = () => {
                 </button>
             </div>
 
-            {flashcardState &&
-                flashcardState.map((flashcard) => (
-                    <FlashcardCard
-                        key={flashcard?.id}
-                        flashcard={flashcard}
-                        deleteFlashcardState={actions.deleteFlashcard}
-                    />
-                ))}
+            {flashcardState.map((flashcard) => (
+                <FlashcardCard
+                    key={flashcard?.id}
+                    flashcard={flashcard}
+                    deleteFlashcardState={actions.deleteFlashcard}
+                />
+            ))}
         </Layout>
     );
 };

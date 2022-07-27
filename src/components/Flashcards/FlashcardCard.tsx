@@ -22,13 +22,23 @@ function FlashcardCard(props: Props) {
         });
     };
 
+    const editFlashcardHandler = async (flashcard: FlashcardData) => {
+        await fetch(`/api/flashcards/${props.flashcard.id}/edit`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(flashcard),
+        });
+    };
+
     return (
         <Card className={'py-3 px-4 my-5'}>
             {editFlashcardModal && (
                 <FlashcardDataModal
                     isOpen={editFlashcardModal}
                     onClose={() => setEditFlashcardModal(false)}
-                    collectionId={props.flashcard.collection_id}
+                    collectionId={props.flashcard.collectionId}
                     edit={true}
                     submitHandler={props.deleteFlashcardState}
                     flashcard={props.flashcard}
@@ -55,7 +65,7 @@ function FlashcardCard(props: Props) {
                 </div>
             </div>
             <h2 className="text-sm text-gray-500 mb-1">
-                {props.flashcard.is_multiple
+                {props.flashcard.isMultiple
                     ? 'Multiple Choice Question'
                     : 'Essay question'}
             </h2>
