@@ -1,4 +1,4 @@
-import { collections, flashcards } from '@prisma/client';
+import { collections, flashcards, flashcard_choices } from '@prisma/client';
 
 interface ChoiceData {
     choice: string;
@@ -23,6 +23,7 @@ export type {
     ChoiceData,
     collections,
     flashcards,
+    flashcard_choices,
     CollectionContextType,
     FlashcardData,
 };

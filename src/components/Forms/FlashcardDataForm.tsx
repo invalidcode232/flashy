@@ -19,6 +19,11 @@ const FlashcardDataForm = (props: Props) => {
     const [showMultipleChoiceForm, setShowMultipleChoiceForm] =
         React.useState(false);
 
+    // console.log(
+    //     props.flashcard?.choices.find((choice) => choice.isCorrect)?.choice ||
+    //         '',
+    // );
+
     const formik = useFormik({
         initialValues: {
             question: props.flashcard?.question || '',
@@ -42,7 +47,7 @@ const FlashcardDataForm = (props: Props) => {
                 });
             });
 
-            let flashcardData: FlashcardData = {
+            const flashcardData: FlashcardData = {
                 question: values.question,
                 collectionId: props.collectionId,
                 isMultiple: values.isMultiple,
@@ -50,27 +55,19 @@ const FlashcardDataForm = (props: Props) => {
                 feedback: values.feedback,
             };
 
-            console.log(JSON.stringify(flashcardData));
+            // const endpoint = props.edit
+            //     ? `/api/flashcards/${props.flashcard?.id}/edit`
+            //     : '/api/flashcards/add';
+            //
+            // const response = await fetch(endpoint, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(flashcardData),
+            // });
 
-            const response = await fetch('/api/flashcards/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(flashcardData),
-            });
-
-            console.log(response);
-
-            if (response.ok) {
-                const flashcardData = await response.json();
-                props.submitHandler(flashcardData);
-
-                props.onClose();
-            } else {
-                const err = await response.text();
-                console.log(response.status, err);
-            }
+            await props.submitHandler(flashcardData);
         },
         validationSchema: Yup.object().shape({
             question: Yup.string()

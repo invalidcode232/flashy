@@ -22,7 +22,7 @@ const FlashcardMultipleChoiceDisplay = (props: Props) => {
                                 // disabled={true}
                                 readOnly={true}
                                 key={index}
-                                defaultChecked={choice.isCorrect}
+                                defaultChecked={false}
                             />
                             <span className={'ml-3'}>{choice.choice}</span>
                         </div>

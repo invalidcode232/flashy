@@ -8,12 +8,13 @@ import CollectionPlayCard from '../../../components/Collections/CollectionPlayCa
 import FlashcardCard from '../../../components/Flashcards/FlashcardCard';
 import FlashcardDataModal from '../../../components/Modals/FlashcardDataModal';
 import Layout from '../../../layouts/Dashboard/Layout';
-import { FlashcardData } from '../../../types/types';
+import { ChoiceData, FlashcardData } from '../../../types/types';
 import {
     Action,
     ACTION_EVENTS,
     useFlashcardReducer,
 } from '../../../reducers/flashcard-reducer';
+import camelcaseKeys from 'camelcase-keys';
 
 const mapDispatch = (dispatch: Dispatch<Action>) => {
     return {
@@ -28,6 +29,11 @@ const mapDispatch = (dispatch: Dispatch<Action>) => {
             dispatch({
                 type: ACTION_EVENTS.DELETE_FLASHCARD,
                 payload: flashcard,
+            }),
+        updateChoice: (id: number, choice: ChoiceData[]) =>
+            dispatch({
+                type: ACTION_EVENTS.UPDATE_ANSWER,
+                payload: { id, choice },
             }),
     };
 };
@@ -44,6 +50,19 @@ const Collection: NextPage = () => {
 
     const [flashcardState, flashcardDispatcher] = useFlashcardReducer();
     const actions = mapDispatch(flashcardDispatcher);
+
+    const addFlashcardHandler = async (flashcard: FlashcardData) => {
+        await fetch(`/api/flashcards/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(flashcard),
+        });
+
+        actions.addFlashcard(flashcard);
+        setNewFlashcardModal(false);
+    };
 
     useEffect(() => {
         if (collectionId) {
@@ -62,7 +81,7 @@ const Collection: NextPage = () => {
                 const data: FlashcardData[] = await response.json();
                 flashcardDispatcher({
                     type: ACTION_EVENTS.SET_FLASHCARDS,
-                    payload: data,
+                    payload: camelcaseKeys(data, { deep: true }),
                 });
 
                 // this will cause an infinite loop so we wont use it
@@ -78,7 +97,7 @@ const Collection: NextPage = () => {
                     isOpen={newFlashcardModal}
                     onClose={() => setNewFlashcardModal(false)}
                     collectionId={parseInt(collectionId as string)}
-                    submitHandler={actions.addFlashcard}
+                    submitHandler={addFlashcardHandler}
                 />
             )}
 
@@ -113,6 +132,7 @@ const Collection: NextPage = () => {
                     key={flashcard?.id}
                     flashcard={flashcard}
                     deleteFlashcardState={actions.deleteFlashcard}
+                    editFlashcardState={actions.updateChoice}
                 />
             ))}
         </Layout>

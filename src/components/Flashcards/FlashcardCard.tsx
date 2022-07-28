@@ -2,12 +2,13 @@ import { FaPen, FaTrash } from 'react-icons/fa';
 import Card from '../UI/Card';
 import { useState } from 'react';
 import FlashcardMultipleChoiceDisplay from './FlashcardMultipleChoiceDisplay';
-import { FlashcardData } from '../../types/types';
+import { ChoiceData, FlashcardData } from '../../types/types';
 import FlashcardDataModal from '../Modals/FlashcardDataModal';
 
 type Props = {
     flashcard: FlashcardData;
     deleteFlashcardState: (flashcard: FlashcardData) => void;
+    editFlashcardState: (id: number, choice: ChoiceData[]) => void;
 };
 
 function FlashcardCard(props: Props) {
@@ -23,13 +24,26 @@ function FlashcardCard(props: Props) {
     };
 
     const editFlashcardHandler = async (flashcard: FlashcardData) => {
-        await fetch(`/api/flashcards/${props.flashcard.id}/edit`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
+        if (props.flashcard.id) {
+            props.editFlashcardState(props.flashcard.id, flashcard.choices);
+        }
+
+        const response = await fetch(
+            `/api/flashcards/${props.flashcard.id}/edit`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(flashcard),
             },
-            body: JSON.stringify(flashcard),
-        });
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to edit flashcard');
+        }
+
+        setEditFlashcardModal(false);
     };
 
     return (
@@ -40,7 +54,7 @@ function FlashcardCard(props: Props) {
                     onClose={() => setEditFlashcardModal(false)}
                     collectionId={props.flashcard.collectionId}
                     edit={true}
-                    submitHandler={props.deleteFlashcardState}
+                    submitHandler={editFlashcardHandler}
                     flashcard={props.flashcard}
                 />
             )}

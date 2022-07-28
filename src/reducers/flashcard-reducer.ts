@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { FlashcardData } from '../types/types';
+import { ChoiceData, FlashcardData } from '../types/types';
 
 const INITIAL_STATE: FlashcardData[] = [];
 
@@ -8,13 +8,18 @@ enum ACTION_EVENTS {
     DELETE_FLASHCARD,
     EDIT_FLASHCARD,
     SET_FLASHCARDS,
+    UPDATE_ANSWER,
 }
 
 type Action =
     | { type: ACTION_EVENTS.SET_FLASHCARDS; payload: FlashcardData[] }
     | { type: ACTION_EVENTS.ADD_FLASHCARD; payload: FlashcardData }
     | { type: ACTION_EVENTS.DELETE_FLASHCARD; payload: FlashcardData }
-    | { type: ACTION_EVENTS.EDIT_FLASHCARD; payload: FlashcardData };
+    | { type: ACTION_EVENTS.EDIT_FLASHCARD; payload: FlashcardData }
+    | {
+          type: ACTION_EVENTS.UPDATE_ANSWER;
+          payload: { id: number; choice: ChoiceData[] };
+      };
 
 const reducer = (state: FlashcardData[], action: Action): FlashcardData[] => {
     switch (action.type) {
@@ -26,6 +31,17 @@ const reducer = (state: FlashcardData[], action: Action): FlashcardData[] => {
             return state.filter(
                 (flashcard) => flashcard.id !== action.payload.id,
             );
+        case ACTION_EVENTS.UPDATE_ANSWER:
+            return state.map((flashcard) => {
+                if (flashcard.id === action.payload.id) {
+                    return {
+                        ...flashcard,
+                        choices: action.payload.choice,
+                    };
+                }
+
+                return flashcard;
+            });
         default:
             return state;
     }

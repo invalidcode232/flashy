@@ -1,6 +1,6 @@
 import client from '../client';
 import { ChoiceData, FlashcardData } from '../types/types';
-import { camelize } from '../utils/utils';
+import camelcaseKeys from 'camelcase-keys';
 
 class Flashcard {
     static async save(
@@ -34,7 +34,7 @@ class Flashcard {
         }
 
         const flashcardData: FlashcardData = {
-            ...(camelize(flashcardMeta) as FlashcardData),
+            ...(camelcaseKeys(flashcardMeta) as FlashcardData),
             choices: choiceData,
         };
 
@@ -67,16 +67,27 @@ class Flashcard {
         });
     }
 
-    static async edit(id: number, question: string, answerData: ChoiceData) {
-        return await client.flashcards.update({
+    static async edit(id: number, choices: ChoiceData[]) {
+        await client.flashcard_choices.deleteMany({
             where: {
-                id: id,
-            },
-            data: {
-                question: question,
-                ...answerData,
+                flashcard_id: id,
             },
         });
+
+        let choiceData = [];
+        for (const choice in choices) {
+            let data = await client.flashcard_choices.create({
+                data: {
+                    flashcard_id: id,
+                    choice: choices[choice].choice,
+                    is_correct: choices[choice].isCorrect,
+                },
+            });
+
+            choiceData.push(data);
+        }
+
+        return choiceData;
     }
 }
 
