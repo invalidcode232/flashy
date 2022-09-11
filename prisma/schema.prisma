@@ -48,6 +48,7 @@ model User {
 
   flashcard_history flashcard_history[]
   collections       collections[]
+
   @@map("users")
 }
 
@@ -74,11 +75,12 @@ model flashcards {
   collection_id Int
   question      String  @db.VarChar(300)
   is_multiple   Boolean
+  answer        String?
   feedback      String?
 
-  collection        collections         @relation(fields: [collection_id], references: [id], onDelete: Cascade)
-  choices flashcard_choices[]
-  history flashcard_history[]
+  collection collections         @relation(fields: [collection_id], references: [id], onDelete: Cascade)
+  choices    flashcard_choices[]
+  history    flashcard_history[]
 }
 
 model flashcard_choices {

@@ -9,9 +9,6 @@ export default async function handler(
     if (req.method === 'POST') {
         const { name } = req.body;
 
-        console.log(name);
-        console.log(req.body);
-
         const session = await getSession({ req });
 
         if (!session || !session.user) {

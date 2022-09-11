@@ -52,8 +52,11 @@ const FlashcardDataForm = (props: Props) => {
                 collectionId: props.collectionId,
                 isMultiple: values.isMultiple,
                 choices: choices,
+                answer: !values.isMultiple ? values.answerEssay : undefined,
                 feedback: values.feedback,
             };
+
+            console.log(flashcardData);
 
             // const endpoint = props.edit
             //     ? `/api/flashcards/${props.flashcard?.id}/edit`
@@ -93,10 +96,17 @@ const FlashcardDataForm = (props: Props) => {
         ]);
     };
 
+    const multipleChoiceRemoveHandler = (index: number) => {
+        const newChoices = [...formik.values.answerChoices];
+        newChoices.splice(index, 1);
+        formik.setFieldValue('answerChoices', newChoices);
+    };
+
     const answerInput = showMultipleChoiceForm ? (
         <FlashcardMultipleChoiceInput
             choices={formik.values.answerChoices}
             addMultipleChoice={multipleChoiceAddHandler}
+            removeMultipleChoice={multipleChoiceRemoveHandler}
             formik={formik}
         />
     ) : (

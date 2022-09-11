@@ -1,9 +1,11 @@
 import { Field, FormikProps } from 'formik';
 import React from 'react';
+import { FaTrash } from 'react-icons/fa';
 
 type Props = {
     choices: string[];
     addMultipleChoice: (event: React.MouseEvent<HTMLInputElement>) => void;
+    removeMultipleChoice: (index: number) => void;
     formik: FormikProps<any>;
 };
 
@@ -12,20 +14,28 @@ const FlashcardMultipleChoiceInput = (props: Props) => {
         <>
             {props.choices.map((choice, index) => (
                 <React.Fragment key={index}>
-                    <Field
-                        name="correctChoice"
-                        type="radio"
-                        placeholder="New choice"
-                        value={choice}
-                        className={'mr-2 scale-125'}
-                    />
-                    <Field
-                        name={`answerChoices[${index}]`}
-                        className={'my-1 px-1 rounded-sm'}
-                        placeholder={'New choice'}
-                    />
-
-                    <br />
+                    <div className="flex justify-between w-1/5 my-2">
+                        <div>
+                            <Field
+                                name="correctChoice"
+                                type="radio"
+                                placeholder="New choice"
+                                value={choice}
+                                className={'mr-2 scale-125'}
+                            />
+                            <Field
+                                name={`answerChoices[${index}]`}
+                                className={'px-1 rounded-sm'}
+                                placeholder={'New choice'}
+                            />
+                        </div>
+                        <button
+                            className="text-gray-500"
+                            onClick={() => props.removeMultipleChoice(index)}
+                        >
+                            <FaTrash />
+                        </button>
+                    </div>
                 </React.Fragment>
             ))}
 

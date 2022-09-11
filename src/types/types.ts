@@ -11,6 +11,7 @@ type FlashcardData = {
     collectionId: number;
     isMultiple: boolean;
     feedback: string;
+    answer?: string;
     choices: ChoiceData[];
 };
 

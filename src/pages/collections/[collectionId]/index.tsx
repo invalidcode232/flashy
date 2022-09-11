@@ -1,4 +1,5 @@
 import { collections } from '@prisma/client';
+import camelcaseKeys from 'camelcase-keys';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Dispatch, useEffect, useState } from 'react';
@@ -8,13 +9,12 @@ import CollectionPlayCard from '../../../components/Collections/CollectionPlayCa
 import FlashcardCard from '../../../components/Flashcards/FlashcardCard';
 import FlashcardDataModal from '../../../components/Modals/FlashcardDataModal';
 import Layout from '../../../layouts/Dashboard/Layout';
-import { ChoiceData, FlashcardData } from '../../../types/types';
 import {
     Action,
     ACTION_EVENTS,
     useFlashcardReducer,
 } from '../../../reducers/flashcard-reducer';
-import camelcaseKeys from 'camelcase-keys';
+import { ChoiceData, FlashcardData } from '../../../types/types';
 
 const mapDispatch = (dispatch: Dispatch<Action>) => {
     return {
@@ -107,12 +107,23 @@ const Collection: NextPage = () => {
             <CollectionInfo info={'Date modified'} value={'2021/02/15'} />
             <CollectionInfo info={'Date created'} value={'2021/02/15'} />
 
-            <CollectionPlayCard header="Play collection">
-                You have <strong>10</strong> flashcards in schedule.
-            </CollectionPlayCard>
-            <CollectionPlayCard header="Play all flashcards">
-                Play all <strong>52</strong> flashcards in this collection.
-            </CollectionPlayCard>
+            {collectionId && (
+                <>
+                    <CollectionPlayCard
+                        header="Play collection"
+                        collectionId={collectionId as string}
+                    >
+                        You have <strong>10</strong> flashcards in schedule.
+                    </CollectionPlayCard>
+                    <CollectionPlayCard
+                        header="Play all flashcards"
+                        collectionId={collectionId as string}
+                    >
+                        Play all <strong>52</strong> flashcards in this
+                        collection.
+                    </CollectionPlayCard>
+                </>
+            )}
 
             <div className="flex justify-between mt-6 mb-3">
                 <h1 className="text-2xl mb-5 font-semibold">Flashcards</h1>

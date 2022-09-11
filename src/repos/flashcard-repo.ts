@@ -1,12 +1,13 @@
+import camelcaseKeys from 'camelcase-keys';
 import client from '../client';
 import { ChoiceData, FlashcardData } from '../types/types';
-import camelcaseKeys from 'camelcase-keys';
 
 class Flashcard {
     static async save(
         question: string,
         collectionId: number,
         isMultiple: boolean,
+        answer: string,
         choices: ChoiceData[],
     ) {
         const flashcardMeta = await client.flashcards.create({
@@ -14,6 +15,7 @@ class Flashcard {
                 question: question,
                 collection_id: collectionId,
                 is_multiple: isMultiple,
+                answer: '',
             },
         });
 
@@ -88,6 +90,35 @@ class Flashcard {
         }
 
         return choiceData;
+    }
+
+    static async log(userId: string, flashcardId: number, isCorrect: boolean) {
+        await client.flashcard_history.upsert({
+            where: {
+                userId_flashcard_id: {
+                    userId: userId,
+                    flashcard_id: flashcardId,
+                },
+            },
+            update: {
+                last_answered: new Date(),
+                last_correct: isCorrect,
+            },
+            create: {
+                userId: userId,
+                flashcard_id: flashcardId,
+                last_answered: new Date(),
+                last_correct: isCorrect,
+            },
+        });
+        // await client.flashcard_history.create({
+        //     data: {
+        //         userId: userId,
+        //         flashcard_id: flashcardId,
+        //         last_correct: isCorrect,
+        //         last_answered: new Date(),
+        //     },
+        // });
     }
 }
 
