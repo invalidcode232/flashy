@@ -13,6 +13,8 @@ const Dashboard: NextPage = () => {
     const [isCorrect, setIsCorrect] = useState<boolean | undefined>(undefined);
     const [flashcards, setFlashcards] = useState<FlashcardData[]>([]);
     const [curFlashcardIndex, setCurFlashcardIndex] = useState(0);
+    const [showControls, setShowControls] = useState(false);
+    const [score, setScore] = useState(0);
 
     useEffect(() => {
         if (collectionId) {
@@ -33,6 +35,7 @@ const Dashboard: NextPage = () => {
             : answer === curFlashcard.answer;
 
         setIsCorrect(isCorrect);
+        setScore(isCorrect ? score + 1 : score);
 
         fetch(`/api/flashcards/${curFlashcard.id}/log`, {
             method: 'PATCH',
@@ -45,8 +48,11 @@ const Dashboard: NextPage = () => {
             }),
         });
 
-        setCurFlashcardIndex((index) => (index += 1));
+        setShowControls(true);
+        // setCurFlashcardIndex((index) => (index += 1));
     };
+
+    const pageControl = () => {};
 
     return (
         <Layout>
@@ -73,7 +79,20 @@ const Dashboard: NextPage = () => {
                 <div className="text-center mt-3">
                     <p className="text-xl font-bold">
                         You have finished all the flashcards in this collection.
+                        Your score: {score} / {flashcards.length}
                     </p>
+                </div>
+            )}
+
+            {showControls && (
+                <div className="flex">
+                    <button className="rounded-md bg-green-400 p-3">
+                        Next
+                    </button>
+
+                    <button className="rounded-md bg-slate-600 p-3">
+                        Previous
+                    </button>
                 </div>
             )}
         </Layout>
