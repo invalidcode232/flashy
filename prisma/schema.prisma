@@ -101,4 +101,6 @@ model flashcard_history {
 
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   flashcard flashcards @relation(fields: [flashcard_id], references: [id], onDelete: Cascade)
+
+  @@unique([userId, flashcard_id])
 }
